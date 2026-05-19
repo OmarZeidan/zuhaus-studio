@@ -30,23 +30,6 @@ export const weeklyMenu = defineType({
               validation: (Rule) => Rule.required(),
             }),
             defineField({
-              name: 'weekday',
-              title: 'Wochentag (Weekday)',
-              type: 'string',
-              options: {
-                list: [
-                  {title: 'Montag (Monday)', value: 'Montag'},
-                  {title: 'Dienstag (Tuesday)', value: 'Dienstag'},
-                  {title: 'Mittwoch (Wednesday)', value: 'Mittwoch'},
-                  {title: 'Donnerstag (Thursday)', value: 'Donnerstag'},
-                  {title: 'Freitag (Friday)', value: 'Freitag'},
-                  {title: 'Samstag (Saturday)', value: 'Samstag'},
-                  {title: 'Sonntag (Sunday)', value: 'Sonntag'},
-                ],
-              },
-              validation: (Rule) => Rule.required(),
-            }),
-            defineField({
               name: 'dishes',
               title: 'Gerichte (Dishes)',
               type: 'array',
@@ -60,11 +43,22 @@ export const weeklyMenu = defineType({
           ],
           preview: {
             select: {
-              title: 'weekday',
-              subtitle: 'date',
+              title: 'date',
             },
-            prepare({title, subtitle}) {
-              return {title, subtitle}
+            prepare({title}) {
+              const weekdays = [
+                'Sonntag',
+                'Montag',
+                'Dienstag',
+                'Mittwoch',
+                'Donnerstag',
+                'Freitag',
+                'Samstag',
+              ]
+              const weekday = title
+                ? weekdays[new Date(title + 'T12:00:00').getDay()]
+                : 'Kein Datum'
+              return {title: weekday, subtitle: title}
             },
           },
         }),
